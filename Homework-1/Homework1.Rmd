@@ -1,0 +1,22 @@
+Homework 1 
+```{r}
+vector_pesos = runif(25, min = 160, max = 200)
+matrix_pesos = matrix(vector_pesos, byrow = FALSE, nrow = 5)
+
+meses_title <- c("enero", "febrero", "marzo", "abril", "mayo")
+colnames(matrix_pesos) <- meses_title
+
+nombres_title <- c("Luis", "Jorge", "Alexandra", "Brad", "Monica")
+rownames(matrix_pesos) <- nombres_title
+
+matrix_pesos
+
+prom_nombres <- rowMeans(matrix_pesos)
+prom_mensual <- colMeans(matrix_pesos)
+
+peso_f_matrix <- rbind(matrix_pesos, prom_mensual)
+peso_f_matrix <- cbind(peso_f_matrix, prom_nombres)
+
+peso_f_matrix
+
+```
