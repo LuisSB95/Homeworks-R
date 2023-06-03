@@ -1,0 +1,138 @@
+
+FUNCIONES 
+
+#ESTRUCTURA DE UNA FUNCION
+
+nombre_funcion <- function(argumento1, argumento2){
+  codigo
+}
+
+explicacion
+
+-argumento1 : argumetnos de entrada
+-codigo: codgio a ejectuar dentro la funcion para obtener una salida ya sea un numoer, lista, data frame, grafico, mensaje o cualquier objeto.
+
+
+
+EJEMPLO 
+
+trataremos de hacer hacer una funcion para la siguiente ecuacion: a1*r^(n-1)
+
+
+```{r}
+ejemplo1 <- function(a1, r, n){
+  a1*r**(n - 1)
+}
+
+#llamar a ejecutar la funcion
+#nombramos la funcion en este caso ejemplo1 y luego ingresamos valores a los argumentos (variables) de la funcion
+
+ejemplo1 (a1 = 1,r= 2, n= 5) #16
+
+```
+
+ARGUMENTOS DE ENTRADA
+
+Los argumentos son valores de entrada de las funciones, en el caso del ejemplo anterior es a1, r y n
+
+se puede escribir los valores del argumento de dos maneras, llamando los nombres de los argumentos sin importar el orden
+
+```{r}
+ejemplo1(r=2, n=5, a1=1)
+```
+
+la otra forma de ejecutar la funcion es ingresando unicamente los valores, pero se tiene que respetar el orden con que se escribio originalmente la funcion
+
+```{r}
+#ejemplo1 <- function(a1, r, n)
+
+ejemplo1(1,2,5)
+```
+
+FAMILIA APPLY
+
+La familia de funciones apply es usada para aplicar una función a cada elemento de una estructura de datos. En particular, es usada para aplicar funciones en matrices, data frames, arrays y listas.
+
+#LAPPLY
+
+lapply(X,   # Lista o vector
+       FUN, # Función a ser aplicada
+       ...) # Argumentos adicionales para ser pasados a FUN
+       
+EJEMPLO        
+```{r}
+#vectores
+vector1 <- list(c(1:5), c(6:15)) 
+
+#hacemos una operacion
+
+lapply(vector1, sum)
+#el resultado sera la suma de cada lista 
+
+```
+lapply aplicado en una funcion
+```{r}
+vector11 <- c(1:5)
+
+#creamos la funcion 
+funcion_lapply <- function(x){
+  x+1
+}
+
+lapply(vector11, funcion_lapply)
+
+```
+
+#SAPPLY
+La función sapply en R es una función vectorizada de la familia de aplicaciones que permite iterar sobre una lista o vector sin la necesidad de usar el bucle for
+
+sapply(X,   # Vector o lista
+       FUN, # Función a ser aplicada
+       ..., # Argumentos adicionales para ser pasados a FUN
+       simplify = TRUE,  # Si FALSE devuelve una lista. Si "array" devuelve un array si es posible
+       USE.NAMES = TRUE) # Si TRUE y si X es un vector de caracteres, usa los nombres de X
+
+
+```{r}
+funcion_sapply <- function(x){
+  matrix(x, ncol = 4, nrow = 4)
+}
+
+sapply(1:3, funcion_sapply)
+```
+```{r}
+sapply(1:3, funcion_sapply, simplify = "array")
+```
+
+VAPPLY
+es una herramienta menos conocida que lapply y sapply pero que es muy util para verificar el tipo de variable a ejecutar y evitar errores silenciosos
+
+```{r}
+#ejemplo de error silencioso
+vector13 <- c("a","b","c","d")
+vector14 <- list(a= c(1:5), b=c(6:10), c = c(1:15) )
+
+funcion_lapply <- function(x){
+  x+1
+}
+
+sapply(vector13, max) #vemos que se ejecuta la funcion y no da errores pero el resultado no es el esperado
+
+```
+```{r}
+sapply(vector14, max) #nos devuelve un resultado esperado
+```
+
+
+
+
+```{r}
+vapply(vector13, max, numeric(1)) #vemos que no se ejectua la instruccion ya que requerimos valores numeros 
+```
+
+```{r}
+vector15 <- c(1,2,3,4,5)
+vapply(vector15,funcion_lapply, numeric(1)) #con vapply si ejecuta la funcion ya que los valores ingresados si son numericos
+```
+ 
+       
