@@ -1,0 +1,71 @@
+```{r}
+library(tidyverse)
+library(dplyr)
+
+questions <- read_csv('questions.csv')
+answers <- read_csv('answers.csv')
+tags <- read_csv('tags.csv')
+question_tags <- read_csv('question_tags.csv')
+View(questions)
+View(answers)
+View(tags)
+View(question_tags)
+```
+
+
+```{r}
+#1 LEFT-JOINING QUESTIONS AND TAGS
+
+questions_with_tags <- questions %>%
+   left_join(question_tags, by = c("id" = "question_id"))%>%
+   left_join(tags, by = "id")%>%
+   replace_na(list(tag_name = "only-r"))
+ 
+questions_with_tags
+```
+
+```{r}
+#2. Comparing scores across tags
+
+questions_with_tags %>%
+  group_by(tag_name) %>%
+  summarize(mean_score = mean(score)) %>%
+  arrange(desc(mean_score))
+
+
+```
+```{r}
+#3. Finding gaps between questions and answers
+
+questions %>%
+  inner_join(answers, by = c("id" = "question_id"), suffix = c("_question", "_answer"))%>%
+  mutate(gap = creation_date_answer - creation_date_question)
+```
+
+```{r}
+#4. Joining question and answer counts
+#4.1
+answer_counts <- answers %>%
+  count(question_id)
+answer_counts
+
+#4.2 a $.4
+questions_answer_counts <- questions %>%
+  left_join(answer_counts, by = c("id" = "question_id"))%>%
+  replace_na(list(n = 0))
+
+questions_answer_counts
+  
+```
+
+```{r}
+#5. Joining questions, answers, and tags
+question_tags
+questions_answer_counts
+tags
+
+question_tags %>%
+  inner_join(questions_answer_counts, by = c("question_id" = "id"))%>%
+  inner_join(tags, by = c("tag_id"="id"))
+```
+
